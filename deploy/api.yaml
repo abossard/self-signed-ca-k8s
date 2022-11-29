@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      volumes:
+      - name: ca
+        secret:
+          secretName: ca-secret
+      - name: api
+        secret:
+          secretName: api-secret
+      containers:
+      - name: api
+        image: api
+        imagePullPolicy: Never
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://*:80;https://*:443"
+        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+          value: "/etc/certs/api/tls.crt"
+        - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
+          value: "/etc/certs/api/tls.key"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+        - containerPort: 443
+        volumeMounts:
+        - mountPath: "/etc/certs/ca"
+          name: ca
+          readOnly: true
+        - mountPath: "/etc/certs/api"
+          name: api
+          readOnly: true 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+spec:
+  selector:
+    app: api
+  ports:
+  - port: 443
+    targetPort: 443
