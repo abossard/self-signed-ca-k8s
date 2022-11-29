@@ -20,7 +20,10 @@ spec:
         lifecycle:
           postStart:
             exec:
-              command: ["/bin/sh", "-c", "cp /etc/certs/ca/ca.crt /etc/ssl/certs/custom_ca.pem"]
+              command: [
+                "/bin/sh", 
+                "-c", 
+                "cp /etc/certs/ca/ca.crt /usr/local/share/ca-certificates/ && update-ca-certificates"]
         image: web
         imagePullPolicy: Never
         env:
