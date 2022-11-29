@@ -17,6 +17,10 @@ spec:
           secretName: ca-secret
       containers:
       - name: web
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "cp /etc/certs/ca/ca.crt /etc/ssl/certs/custom_ca.pem"]
         image: web
         imagePullPolicy: Never
         env:

@@ -25,9 +25,9 @@ spec:
         env:
         - name: ASPNETCORE_URLS
           value: "http://*:80;https://*:443"
-        - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+        - name: Kestrel__Certificates__Default__Path
           value: "/etc/certs/api/tls.crt"
-        - name: ASPNETCORE_Kestrel__Certificates__Default__KeyPath
+        - name: Kestrel__Certificates__Default__KeyPath
           value: "/etc/certs/api/tls.key"
         resources:
           limits:
